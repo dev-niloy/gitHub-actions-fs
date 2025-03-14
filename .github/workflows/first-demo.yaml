@@ -1,8 +1,10 @@
 name: "Fist Demo Action"
+
 on:
   push:
     branches:
-      - master
+      - main
+
 jobs:
   demo-job:
     runs-on: ubuntu-latest
