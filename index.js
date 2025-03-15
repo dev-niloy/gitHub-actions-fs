@@ -1,8 +1,8 @@
 const express = require("express");
 const app = express();
 
-app.get("/", () => {
-  resizeBy.send("Hello World");
+app.get("/", (req, res) => {
+  res.send("Hello World from server api response!");
 });
 
 app.listen(3000, () => {
