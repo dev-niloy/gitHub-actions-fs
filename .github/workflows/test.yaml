@@ -1,24 +1,41 @@
+# This is the name of the GitHub Actions workflow.
 name: "Test using mocha"
 
+# The 'on' key defines the events that trigger this workflow.
+# In this case, the workflow will run whenever a push event occurs.
 on:
   push:
 
 jobs:
+  # 'test-job' is an identifier for the job.
   test-job:
+    # The job will run on an Ubuntu virtual machine.
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
 
+    # The steps within the job are executed sequentially.
+    steps:
+      # Step 1: Check out the repository code.
+      - uses: actions/checkout@v4
+        # This action clones your repository into the runner, making the code available for subsequent steps.
+
+      # Step 2: Set up Node.js on the runner.
       - name: Use Node.js
         uses: actions/setup-node@v2
         with:
           node-version: "20.x"
+        # This action installs Node.js (version 20.x in this case) so that your tests run in a Node.js environment.
 
+      # Step 3: Install project dependencies.
       - name: Install dependencies
         run: npm install
+        # This command installs all the dependencies listed in your package.json file.
 
+      # Step 4: Run your tests.
       - name: Run tests
         run: npm test
+        # This command executes the test script defined in your package.json file (often runs mocha or another test framework).
 
+      # Step 5: Print a message indicating that all tests have passed.
       - name: All tests passed message
         run: echo "All tests passed"
+        # This step prints a success message to the log, which is useful for confirming that all previous steps executed successfully.

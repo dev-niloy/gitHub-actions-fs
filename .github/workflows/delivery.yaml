@@ -1,0 +1,47 @@
+# This workflow file is used to automate the process of building and publishing a Docker image.
+name: "Publish Docker Image"
+
+# The 'on' section defines the events that trigger this workflow.
+on:
+  push:
+    branches:
+      - main # The workflow runs only when there is a push to the 'main' branch.
+
+jobs:
+  push-to-registry: # Job identifier; this job pushes the Docker image to the registry.
+    name: Push to Docker Hub # This is the display name for the job.
+    runs-on: ubuntu-latest # The job runs on the latest Ubuntu virtual machine provided by GitHub Actions.
+
+    steps: # Steps are executed in sequence within the job.
+      # Step 1: Checkout the repository code.
+      - name: Checkout
+        uses: actions/checkout@v4
+        # This step uses the checkout action to clone your repository into the runner, so subsequent steps can access your code.
+
+      # Step 2: Log in to Docker Hub.
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+        # This step logs into Docker Hub using the credentials stored securely as GitHub Secrets.
+
+      # Step 3: Extract meta information.
+      - name: Extract meta information
+        id: meta
+        uses: docker/metadata-action@v3
+        with:
+          images: devniloy/github-actions-fs
+        # Here, the metadata-action extracts useful meta-information like version tags for the Docker image.
+        # The 'id: meta' allows you to reference outputs (like 'tags') from this step in later steps.
+
+      # Step 4: Build and push the Docker image.
+      - name: Build and push
+        uses: docker/build-push-action@v3
+        with:
+          context: . # Specifies the build context (current directory).
+          file: ./Dockerfile # Points to the Dockerfile used to build the image.
+          push: true # Tells the action to push the image to Docker Hub after building.
+          tags: ${{ steps.meta.outputs.tags }}
+        # This step builds the Docker image using the provided Dockerfile and then pushes it to Docker Hub.
+        # The image gets tagged using the tags output from the previous 'meta' step.

@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 
 app.get("/", (req, res) => {
-  res.status(201).json({ message: "Hello World from server api response!" });
+  res.send("Hello World from server api response!");
 });
 
 module.exports = app;

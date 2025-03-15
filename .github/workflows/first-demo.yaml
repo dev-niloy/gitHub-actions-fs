@@ -1,29 +1,54 @@
-name: "Fist Demo Action"
+# This is a demo GitHub Action workflow file.
+name: "Fist Demo Action" # The name of the workflow as it will appear in GitHub Actions
 
+# The 'on' section defines the events that trigger this workflow.
 on:
   push:
     branches:
-      - main
+      - main # This workflow will run whenever there is a push to the 'main' branch
 
 jobs:
+  # Define a job with an identifier 'demo-job'
   demo-job:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest # This job runs on a virtual machine with the latest Ubuntu OS
+
     steps:
+      # Step 1: Run a simple command to indicate the action has started.
       - run: echo "Action is running"
+        # This command prints "Action is running" to the job logs.
+
+      # Step 2: Checkout the repository code.
       - name: Checkout
         uses: actions/checkout@v4
+        # This step uses the 'actions/checkout' action to clone your repository into the runner.
+
+      # Step 3: Run a one-line script.
       - name: Run a one-line script
         run: echo "Hello, world!"
+        # This step prints "Hello, world!" to the job logs.
+
+      # Step 4: Run a multi-line script.
       - name: Run a multi-line script
         run: |
           echo "This is the first line"
           echo "This is the second line"
           echo "This is the third line"
+        # This block executes three separate echo commands, printing three lines to the logs.
+
+      # Step 5: List files in the repository workspace.
       - name: List files
         run: ls ${{ github.workspace }}
+        # This command lists all the files in the workspace directory where your repository was checked out.
+
+      # Step 6: Print GitHub context information.
       - name: Print GitHub context
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
         run: echo "$GITHUB_CONTEXT"
+        # This step converts the GitHub context (metadata about the workflow run, event, and repository)
+        # to a JSON string and prints it. This information can be useful for debugging or learning about the workflow context.
+
+      # Step 7: Indicate that the action has completed.
       - name: Action completed
         run: echo "Action has completed"
+        # This final step prints a message to confirm that the action has finished running.
