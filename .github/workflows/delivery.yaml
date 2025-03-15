@@ -16,6 +16,8 @@ jobs:
       # Step 1: Checkout the repository code.
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Ensure all files are fetched
         # This step uses the checkout action to clone your repository into the runner, so subsequent steps can access your code.
 
       # Step 2: Log in to Docker Hub.
